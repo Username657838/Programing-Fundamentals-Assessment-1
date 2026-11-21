@@ -10,7 +10,7 @@ int main(void) {
     
     /*Subtotal multiplies the amount of quantity and price,
     printf and quotation prints a line with the code where
-    you can type anything*/
+    you can type anything and the results will printed out*/
     
     printf("Juancho and Friday Nov 21, 2026 \n");
     printf("Quantity now: %d\n", quantity);
