@@ -1,7 +1,8 @@
 #include <stdio.h>
 int main(void) {
-    /*Integer is a number while floatis the decimal the string, after 
-    that if you give a string a number the value will be a number */
+    /*Integer is a number, while float is the decimal point, 
+    the string is a text, if you give a string a number the 
+    value will be a number */
     
     int quantity = 3;
     float price = 3.50;
