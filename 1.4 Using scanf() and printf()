@@ -2,6 +2,9 @@
 int main() {
     int quantity;
     float price;
+    /*Scanf identifies the amount given for qunatity and 
+    price it store till the printf instruct to multiply 
+    the final result*/
     printf("Juancho and Friday Nov 21, 2026 \n");
     printf("Enter burger quantity: ");
     scanf("%d", &quantity);
@@ -9,7 +12,4 @@ int main() {
     scanf("%f", &price);
     printf("Total cost: AED %.2f\n", quantity * price);
     return 0;
-    /*Scanf identifies the amount given for qunatity and 
-    price it store till the printf instruct to multiply 
-    the final result*/
 }
