@@ -10,7 +10,8 @@
 /* The code for Task 5 Juancho and Nov 23, 2026
    QuickBite Till split into functions */
 
-/* Reads a whole number. Returns -1 if the user typed letters. */
+/* This reads a whole number. Returns to -1 
+if typed string instead of integers. */
 int read_int(void) {
     int value, result, c;
     result = scanf("%d", &value);
@@ -24,8 +25,7 @@ int read_int(void) {
     return value;
 }
 
-/* R1: shows the numbered menu with names and prices.
-   Parameters: item names, item prices, number of items. */
+/* The show_menu() displays the menu to the customer. */
 void show_menu(const char *names[], const float prices[], int count) {
     int i;
     printf("\n--- MENU ---\n");
@@ -35,13 +35,15 @@ void show_menu(const char *names[], const float prices[], int count) {
     printf("0. Finish order\n");
 }
 
-/* R2: asks the cashier for an item number. Returns what was typed. */
+/* The get_choice() asks the customer 
+to select the item from the menu. */
 int get_choice(void) {
     printf("Enter item number: ");
     return read_int();
 }
 
-/* R5: keeps asking until the quantity is 1 to 10. Returns the quantity. */
+/* The get_quantity() asks the customer how many 
+of the selected food items they want to buy. */
 int get_quantity(void) {
     int qty = 0;
     while (qty < MIN_QTY || qty > MAX_QTY) {
@@ -55,7 +57,8 @@ int get_quantity(void) {
     return qty;
 }
 
-/* R4: returns 10% of the subtotal if it is AED 60 or more, otherwise 0. */
+/* The calc_discount() calculates the 
+discount applied to the customer's order. */
 float calc_discount(float subtotal) {
     if (subtotal >= DISCOUNT_LIMIT) {
         return subtotal * DISCOUNT_RATE;
@@ -63,12 +66,14 @@ float calc_discount(float subtotal) {
     return 0.0;
 }
 
-/* R3: returns the 5% VAT on the amount it is given. */
+/* The calc_vat() calculates the 5% Value
+Added Tax (VAT) onthe amount it receives. */
 float calc_vat(float amount) {
     return amount * VAT_RATE;
 }
 
-/* R3: prints the receipt. Every value is passed in as a parameter. */
+/* The print_receipt() prints the final receipt for the customer. It 
+displays the number of items, subtotal,discount, VAT, and final total. */
 void print_receipt(int items_ordered, float subtotal, float discount,
                    float discounted, float vat, float total) {
     printf("\n========== RECEIPT ==========\n");
@@ -98,13 +103,13 @@ int main(void) {
 
     printf("=== Welcome to QuickBite Kitchen ===\n");
 
-    /* Keep taking items until the cashier enters 0 */
+    /* It keeps taking items until the cashier enters 0 */
     do {
         show_menu(names, prices, NUM_ITEMS);
         choice = get_choice();
 
         if (choice == 0) {
-            /* 0 ends the order and the receipt is printed */
+            /* typyng 0 ends the order and the receipt is printed */
         } else if (choice < 1 || choice > NUM_ITEMS) {
             printf("Invalid choice! Please enter a number from 1 to %d.\n",
                    NUM_ITEMS);
@@ -124,7 +129,7 @@ int main(void) {
         return 0;
     }
 
-    /* Discount first, then VAT on the discounted amount */
+    /* Discount is added first, then VAT on the amount */
     discount   = calc_discount(subtotal);
     discounted = subtotal - discount;
     vat        = calc_vat(discounted);
