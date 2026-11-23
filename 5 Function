@@ -1,0 +1,138 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define NUM_ITEMS      5
+#define MIN_QTY        1
+#define MAX_QTY        10
+#define VAT_RATE       0.05
+#define DISCOUNT_RATE  0.10
+#define DISCOUNT_LIMIT 60.00
+
+/* This code read the whole number. It will
+Return if the input is not a number. */
+int read_int(void) {
+    int value, result, c;
+    result = scanf("%d", &value);
+    if (result == EOF) {
+        exit(0);
+    }
+    if (result != 1) {
+        while ((c = getchar()) != '\n' && c != EOF) { }
+        return -1;
+    }
+    return value;
+}
+
+/* This shows the numbered menu. The
+Parameters: item names, prices, count. */
+void show_menu(const char *names[], const float prices[], int count) {
+    int i;
+    printf("\n--- MENU ---\n");
+    for (i = 0; i < count; i++) {
+        printf("%d. %-14s AED %.2f\n", i + 1, names[i], prices[i]);
+    }
+    printf("0. Finish order\n");
+}
+
+/* This asks until the menu choice is 0 to 
+max_choice. Returns the choice. */
+int get_choice(int max_choice) {
+    int choice = -1;
+    while (choice < 0 || choice > max_choice) {
+        printf("Enter item number: ");
+        choice = read_int();
+        if (choice < 0 || choice > max_choice) {
+            printf("Invalid choice! Please enter a number from 0 to %d.\n",
+                   max_choice);
+        }
+    }
+    return choice;
+}
+
+/* This asks until quantity is 1 to 
+10. Returns the valid quantity. */
+int get_quantity(void) {
+    int qty = 0;
+    while (qty < MIN_QTY || qty > MAX_QTY) {
+        printf("Enter quantity (%d-%d): ", MIN_QTY, MAX_QTY);
+        qty = read_int();
+        if (qty < MIN_QTY || qty > MAX_QTY) {
+            printf("Invalid quantity! Must be between %d and %d.\n",
+                   MIN_QTY, MAX_QTY);
+        }
+    }
+    return qty;
+}
+
+/* This returns 10% of the subtotal if it
+is 60 or more, otherwise it will be 0. */
+float calc_discount(float subtotal) {
+    if (subtotal >= DISCOUNT_LIMIT) {
+        return subtotal * DISCOUNT_RATE;
+    }
+    return 0.0;
+}
+
+/* This returns the VAT (5%) 
+on the amount given. */
+float calc_vat(float amount) {
+    return amount * VAT_RATE;
+}
+
+/* This prints the receipt. All
+values are passed in as parameters. */
+void print_receipt(int items, float subtotal, float discount,
+                   float discounted, float vat, float total) {
+    printf("\n========== RECEIPT ==========\n");
+    printf("Items ordered:     %d\n", items);
+    printf("Subtotal:          AED %.2f\n", subtotal);
+    if (discount > 0) {
+        printf("Discount (10%%):    AED %.2f\n", discount);
+        printf("Discounted amount: AED %.2f\n", discounted);
+    } else {
+        printf("Discount:          none (subtotal under AED 60)\n");
+    }
+    printf("VAT (5%%):          AED %.2f\n", vat);
+    printf("TOTAL:             AED %.2f\n", total);
+    printf("=============================\n");
+    printf("Thank you for choosing QuickBite!\n");
+}
+
+int main(void) {
+    const char *names[NUM_ITEMS] = {"Chicken Wrap", "Beef Burger",
+                                    "Falafel Box", "Fries", "Lemonade"};
+    float prices[NUM_ITEMS] = {18.00, 22.50, 15.00, 8.00, 6.50};
+
+    int choice, qty;
+    int items_ordered = 0;
+    float line_cost;
+    float subtotal = 0.0, discount, discounted, vat, total;
+
+    printf("=== Welcome to QuickBite Kitchen ===\n");
+
+    /* This keep taking items 
+    until the cashier enters 0 */
+    do {
+        show_menu(names, prices, NUM_ITEMS);
+        choice = get_choice(NUM_ITEMS);
+        if (choice != 0) {
+            qty = get_quantity();
+            line_cost = prices[choice - 1] * qty;
+            subtotal = subtotal + line_cost;
+            items_ordered = items_ordered + qty;
+            printf("Added: %d x %s = AED %.2f\n", qty, names[choice - 1],
+                   line_cost);
+            printf("Running subtotal: AED %.2f\n", subtotal);
+        }
+    } while (choice != 0);
+    if (items_ordered == 0) {
+        printf("\nNo items ordered. Goodbye!\n");
+        return 0;
+    }
+    discount   = calc_discount(subtotal);
+    discounted = subtotal - discount;
+    vat        = calc_vat(discounted);
+    total      = discounted + vat;
+    print_receipt(items_ordered, subtotal, discount, discounted, vat, total);
+    return 0;
+}
