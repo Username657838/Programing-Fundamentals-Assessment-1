@@ -122,7 +122,7 @@ int main(void) {
 
     printf("=== Welcome to QuickBite Kitchen ===\n");
 
-    /* It keeps taking items until the cashier enters 0 */
+    /* The show_menu() again keeps taking items until the cashier enters 0 */
     do {
         show_menu(item_names, item_prices, NUM_ITEMS);
         menu_choice = get_menu_choice();
